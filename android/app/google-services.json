@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "328188996700",
+    "project_id": "talkease-285a9",
+    "storage_bucket": "talkease-285a9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:328188996700:android:270aff7e29edc7e4878a99",
+        "android_client_info": {
+          "package_name": "com.example.meet_easy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "328188996700-6988k90c1fsklch003nb9a2l3afnl2le.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.meet_easy",
+            "certificate_hash": "e15eb2ae3ac4c3a2c2804b759de006904cef9f55"
+          }
+        },
+        {
+          "client_id": "328188996700-mn00mn8vnurkt3itd023d28bl52b4j7f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2IBRwTqV1ZCsr0u4tISPwdQpfbOTGS1A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "328188996700-mn00mn8vnurkt3itd023d28bl52b4j7f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "328188996700-216uj5p5ea2kh2sa4kptsjeip6rdbggb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.meetEasy.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:328188996700:android:634ffab9bee6f0cc878a99",
+        "android_client_info": {
+          "package_name": "com.example.seed_haven"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "328188996700-mn00mn8vnurkt3itd023d28bl52b4j7f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2IBRwTqV1ZCsr0u4tISPwdQpfbOTGS1A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "328188996700-mn00mn8vnurkt3itd023d28bl52b4j7f.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "328188996700-216uj5p5ea2kh2sa4kptsjeip6rdbggb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.meetEasy.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
