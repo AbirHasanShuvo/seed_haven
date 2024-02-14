@@ -96,7 +96,11 @@ class Category_Details extends StatelessWidget {
                                       ),
                                     ),
                                     10.heightBox,
-                                    '${data[index]['p_price']}'.numCurrency.text.color(redColor).make(),
+                                    '${data[index]['p_price']}'
+                                        .numCurrency
+                                        .text
+                                        .color(redColor)
+                                        .make(),
                                   ],
                                 )
                                     .box
@@ -108,8 +112,10 @@ class Category_Details extends StatelessWidget {
                                         horizontal: 4))
                                     .make()
                                     .onTap(() {
-                                  Get.to(
-                                      () => ItemDetails(title: data[index]['p_name'], data: data[index],));
+                                  Get.to(() => ItemDetails(
+                                        title: data[index]['p_name'],
+                                        data: data[index],
+                                      ));
                                 });
                                 ;
                               }),

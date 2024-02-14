@@ -6,6 +6,7 @@ import 'package:seed_haven/views/cart_screen/cart_screen.dart';
 import 'package:seed_haven/views/category_screen/category_screen.dart';
 import 'package:seed_haven/views/home_screen/home_screen.dart';
 import 'package:seed_haven/views/profile_screen/profile_screen.dart';
+import 'package:seed_haven/widgets_common/exit_dialog.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -32,24 +33,34 @@ class Home extends StatelessWidget {
       ProfileScreen()
     ];
 
-    return Scaffold(
-      body: Column(
-        children: [
-          Obx(() => Expanded(
-              child: navBody.elementAt(controller.currentNavIndex.value)))
-        ],
-      ),
-      bottomNavigationBar: Obx(
-        () => BottomNavigationBar(
-          currentIndex: controller.currentNavIndex.value,
-          selectedItemColor: redColor,
-          selectedLabelStyle: const TextStyle(fontFamily: semibold),
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: whiteColor,
-          items: navbarItems,
-          onTap: (value) {
-            controller.currentNavIndex.value = value;
-          },
+    return WillPopScope(
+      onWillPop: () async {
+        showDialog(
+            barrierDismissible: false,
+            //dialog will not goen until one of the button is clicked
+            context: context,
+            builder: (context) => exitDialog(context));
+        return false;
+      },
+      child: Scaffold(
+        body: Column(
+          children: [
+            Obx(() => Expanded(
+                child: navBody.elementAt(controller.currentNavIndex.value)))
+          ],
+        ),
+        bottomNavigationBar: Obx(
+          () => BottomNavigationBar(
+            currentIndex: controller.currentNavIndex.value,
+            selectedItemColor: redColor,
+            selectedLabelStyle: const TextStyle(fontFamily: semibold),
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: whiteColor,
+            items: navbarItems,
+            onTap: (value) {
+              controller.currentNavIndex.value = value;
+            },
+          ),
         ),
       ),
     );
