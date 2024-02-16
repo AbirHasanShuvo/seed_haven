@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:seed_haven/consts/consts.dart';
 import 'package:seed_haven/controllers/cart_controller.dart';
 import 'package:seed_haven/services/firestore_services.dart';
+import 'package:seed_haven/views/cart_screen/shipping_screen.dart';
 import 'package:seed_haven/widgets_common/loading_indicator.dart';
 import 'package:seed_haven/widgets_common/our_button.dart';
 
@@ -15,6 +16,19 @@ class CartScreen extends StatelessWidget {
     var controller = Get.put(CartController());
     return Scaffold(
         backgroundColor: whiteColor,
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: SizedBox(
+            height: 60,
+            child: ourButton(
+                title: 'Proceed to shipping',
+                onpress: () {
+                  Get.to(() => const ShippingDetails());
+                },
+                color: redColor,
+                textColor: whiteColor),
+          ),
+        ),
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title:
@@ -87,15 +101,8 @@ class CartScreen extends StatelessWidget {
                         .color(lightgolden)
                         .width(context.screenWidth - 60)
                         .make(),
-                    10.heightBox,
-                    SizedBox(
-                      width: context.screenWidth - 60,
-                      child: ourButton(
-                          title: 'Procced to shipping',
-                          onpress: () {},
-                          color: redColor,
-                          textColor: whiteColor),
-                    )
+
+
                   ],
                 ),
               );

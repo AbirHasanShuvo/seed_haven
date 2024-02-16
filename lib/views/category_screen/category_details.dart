@@ -112,6 +112,7 @@ class Category_Details extends StatelessWidget {
                                         horizontal: 4))
                                     .make()
                                     .onTap(() {
+                                  controller.checkIsFav(data[index]);
                                   Get.to(() => ItemDetails(
                                         title: data[index]['p_name'],
                                         data: data[index],
