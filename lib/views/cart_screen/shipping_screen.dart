@@ -41,6 +41,14 @@ class ShippingDetails extends StatelessWidget {
           customTextfield(
               "Postal Code", "Postal Code", postalController, false),
           customTextfield("Phone", "Phone", phoneController, false),
+          const SizedBox(
+            height: 10,
+          ),
+          ElevatedButton.icon(
+            onPressed: () {},
+            icon: Icon(Icons.add),
+            label: Text('Hello'),
+          )
         ],
       ),
     );
