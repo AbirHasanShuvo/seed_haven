@@ -30,44 +30,68 @@ class PaymentMethods extends StatelessWidget {
               textColor: whiteColor,
               color: redColor,
               onpress: () {
-                VxToast.show(context, msg: 'Fill every field of the form');
+                controller.placeMyOrder(
+                    controller.paymentIndex.value, controller.totalP.value);
               }),
         ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8),
-        child: Column(
-          children: List.generate(paymentMethodsList.length, (index) {
-            return Container(
-              clipBehavior: Clip.antiAlias,
-              //this boxdecoration will not work work until i use it as antialias
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: redColor,
-                  border: Border.all(
-                      style: BorderStyle.solid, color: redColor, width: 5)),
-              margin: const EdgeInsets.only(bottom: 8),
-              child: Stack(alignment: Alignment.topRight, children: [
-                controller.paymentIndex.value == index
-                    ? Transform.scale(
-                        scale: 1.3,
-                        child: Image.asset(
-                          paymentMethodsList[index],
-                          height: 120,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    : Container(),
-                Checkbox(
-                    activeColor: Colors.green,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50)),
-                    value: true,
-                    onChanged: (value) {})
-              ]),
-            );
-          }),
+        child: Obx(
+          () => Column(
+            children: List.generate(paymentMethodsList.length, (index) {
+              return GestureDetector(
+                onTap: () {
+                  controller.changePaymentIndex(index);
+                },
+                child: Container(
+                  clipBehavior: Clip.antiAlias,
+                  //this boxdecoration will not work work until i use it as antialias
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                          style: BorderStyle.solid, color: redColor, width: 4)),
+                  margin: const EdgeInsets.only(bottom: 8),
+                  child: Stack(alignment: Alignment.topRight, children: [
+                    Transform.scale(
+                      scale: 1.3,
+                      child: Image.asset(
+                        paymentMethodsList[index],
+                        height: 120,
+                        width: double.infinity,
+                        //the two of line in the below is great
+                        colorBlendMode: controller.paymentIndex == index
+                            ? BlendMode.darken
+                            : BlendMode.color,
+                        color: controller.paymentIndex == index
+                            ? Colors.black.withOpacity(0.4)
+                            : Colors.transparent,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    // ,
+                    controller.paymentIndex.value == index
+                        ? Checkbox(
+                            activeColor: Colors.green,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50)),
+                            value: true,
+                            onChanged: (value) {})
+                        : Container(),
+                    Positioned(
+                        bottom: 10,
+                        right: 10,
+                        child: '${paymentMethods[index]}'
+                            .text
+                            .fontFamily(semibold)
+                            .size(16)
+                            .color(whiteColor)
+                            .make()),
+                  ]),
+                ),
+              );
+            }),
+          ),
         ),
       ),
     );
