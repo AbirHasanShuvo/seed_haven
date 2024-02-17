@@ -23,6 +23,7 @@ class CartScreen extends StatelessWidget {
             child: ourButton(
                 title: 'Proceed to shipping',
                 onpress: () {
+
                   Get.to(() => const ShippingDetails());
                 },
                 color: redColor,

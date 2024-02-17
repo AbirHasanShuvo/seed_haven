@@ -17,7 +17,7 @@ const privacyPolicy = 'Privacy Policy';
 const terms = 'Terms and Conditions';
 const alreadyHaveAccount = 'Already have an account ? ';
 const loggedin = 'Logged in successfully';
-const loggedout= 'Logged out successfully';
+const loggedout = 'Logged out successfully';
 const oldpass = 'Old Password';
 const newpass = 'New Password';
 
@@ -71,3 +71,5 @@ const video = 'Video',
 //profile strings
 
 const wishlist = 'My Wishlist', orders = 'My Orders', messages = 'Messages';
+
+const paypal = "Paypal", stripe = "Stripe", cod = "Cash on delivery";
