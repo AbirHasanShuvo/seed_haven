@@ -7,9 +7,14 @@ import 'package:seed_haven/controllers/auth_controller.dart';
 import 'package:seed_haven/controllers/profile_controller.dart';
 import 'package:seed_haven/services/firestore_services.dart';
 import 'package:seed_haven/views/auth_screen/login_screen.dart';
+import 'package:seed_haven/views/chat_screen/chat_screen.dart';
+import 'package:seed_haven/views/order_screen/order_screen.dart';
 import 'package:seed_haven/views/profile_screen/components/details_card.dart';
 import 'package:seed_haven/views/profile_screen/edit_profile_screen.dart';
+import 'package:seed_haven/views/wishlist_screen/wishlist_screen.dart';
 import 'package:seed_haven/widgets_common/bg_widget.dart';
+
+import '../chat_screen/messaging.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -125,6 +130,19 @@ class ProfileScreen extends StatelessWidget {
                           itemCount: profileButtonList.length,
                           itemBuilder: (BuildContext context, index) {
                             return ListTile(
+                              onTap: () {
+                                switch (index) {
+                                  case 0:
+                                    Get.to(const OrderScreen());
+                                    break;
+                                  case 1:
+                                    Get.to(WishlistScreen());
+                                    break;
+                                  case 2:
+                                    Get.to(MessagesScreen());
+                                    break;
+                                }
+                              },
                               leading: Image.asset(
                                 profileButtonIcons[index],
                                 width: 22,

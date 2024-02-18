@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:seed_haven/consts/consts.dart';
 import 'package:seed_haven/consts/list.dart';
 import 'package:seed_haven/controllers/cart_controller.dart';
+import 'package:seed_haven/views/home_screen/home.dart';
 import 'package:seed_haven/widgets_common/loading_indicator.dart';
 
 import '../../widgets_common/our_button.dart';
@@ -35,9 +36,13 @@ class PaymentMethods extends StatelessWidget {
                     title: 'Place your order',
                     textColor: whiteColor,
                     color: redColor,
-                    onpress: () {
-                      controller.placeMyOrder(controller.paymentIndex.value,
+                    onpress: () async {
+                      await controller.placeMyOrder(
+                          controller.paymentIndex.value,
                           controller.totalP.value);
+                      await controller.clearCart();
+                      VxToast.show(context, msg: 'Order placed succesfully');
+                      Get.off(const Home());
                     }),
           ),
         ),
