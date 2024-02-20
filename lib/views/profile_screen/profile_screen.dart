@@ -13,6 +13,7 @@ import 'package:seed_haven/views/profile_screen/components/details_card.dart';
 import 'package:seed_haven/views/profile_screen/edit_profile_screen.dart';
 import 'package:seed_haven/views/wishlist_screen/wishlist_screen.dart';
 import 'package:seed_haven/widgets_common/bg_widget.dart';
+import 'package:seed_haven/widgets_common/loading_indicator.dart';
 
 import '../chat_screen/messaging.dart';
 
@@ -100,24 +101,39 @@ class ProfileScreen extends StatelessWidget {
                           ],
                         ),
                         20.heightBox,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          //this spaceevenly is so good feature
-                          children: [
-                            detailsCard(
-                                count: data['cart_count'],
-                                title: 'in your cart',
-                                width: context.screenWidth / 3.4),
-                            detailsCard(
-                                count: data['wishlist_count'],
-                                title: 'in your wish',
-                                width: context.screenWidth / 3.4),
-                            detailsCard(
-                                count: data['order_count'],
-                                title: 'your orders',
-                                width: context.screenWidth / 3.4),
-                          ],
-                        ),
+
+                        FutureBuilder(
+                            future: FirestoreServices.getCounts(),
+                            builder:
+                                (BuildContext context, AsyncSnapshot snapshot) {
+                              if (!snapshot.hasData) {
+                                print('else is not calling');
+                                return Center(
+                                  child: loadingIndicator(),
+                                );
+                              } else {
+                                var countData = snapshot.data;
+                                return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  //this spaceevenly is so good feature
+                                  children: [
+                                    detailsCard(
+                                        count: countData[0].toString(),
+                                        title: 'in your cart',
+                                        width: context.screenWidth / 3.4),
+                                    detailsCard(
+                                        count: countData[1].toString(),
+                                        title: 'in your wish',
+                                        width: context.screenWidth / 3.4),
+                                    detailsCard(
+                                        count: countData[2].toString(),
+                                        title: 'your orders',
+                                        width: context.screenWidth / 3.4),
+                                  ],
+                                );
+                              }
+                            }),
 
                         20.heightBox,
                         ListView.separated(

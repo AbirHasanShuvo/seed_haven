@@ -1,9 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:seed_haven/consts/colors.dart';
+import 'package:get/get.dart';
 import 'package:seed_haven/consts/consts.dart';
 import 'package:seed_haven/consts/list.dart';
+import 'package:seed_haven/services/firestore_services.dart';
+import 'package:seed_haven/views/category_screen/item_details.dart';
 import 'package:seed_haven/views/home_screen/components/feature_button.dart';
 import 'package:seed_haven/widgets_common/home_button.dart';
+import 'package:seed_haven/widgets_common/loading_indicator.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -228,53 +232,80 @@ class HomeScreen extends StatelessWidget {
                     //all product section
 
                     20.heightBox,
-                    GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      //it won't create a scroll, it will added with the default scroll
-                      shrinkWrap: true,
-                      itemCount: 6,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 8,
-                              crossAxisSpacing: 8,
-                              mainAxisExtent: 300),
-                      itemBuilder: (context, index) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Image.asset(
-                              imgP5,
-                              width: 200,
-                              height: 200,
-                              fit: BoxFit.cover,
-                            ),
-                            const Spacer(),
-                            const Text(
-                              "Laptop 4gb/64gb",
-                              style: TextStyle(
-                                fontFamily: semibold,
-                                color: darkFontGrey,
-                              ),
-                            ),
-                            10.heightBox,
-                            const Text(
-                              '\$600',
-                              style: TextStyle(
-                                  color: redColor,
-                                  fontFamily: bold,
-                                  fontSize: 16),
-                            )
-                          ],
-                        )
-                            .box
-                            .white
-                            .roundedSM
-                            .padding(const EdgeInsets.all(8))
-                            .margin(const EdgeInsets.symmetric(horizontal: 4))
-                            .make();
-                      },
-                    )
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: 'All Products'
+                          .text
+                          .fontFamily(bold)
+                          .color(darkFontGrey)
+                          .size(16)
+                          .make(),
+                    ),
+                    20.heightBox,
+
+                    StreamBuilder(
+                        stream: FirestoreServices.allProducts(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (!snapshot.hasData) {
+                            return loadingIndicator();
+                          } else {
+                            var allproductdata = snapshot.data!.docs;
+                            return GridView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              //it won't create a scroll, it will added with the default scroll
+                              shrinkWrap: true,
+                              itemCount: allproductdata.length,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      mainAxisSpacing: 8,
+                                      crossAxisSpacing: 8,
+                                      mainAxisExtent: 300),
+                              itemBuilder: (context, index) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Image.network(
+                                      allproductdata[index]['p_imgs'][0],
+                                      width: 200,
+                                      height: 200,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    const Spacer(),
+                                    Text(
+                                      allproductdata[index]['p_name'],
+                                      style: const TextStyle(
+                                        fontFamily: semibold,
+                                        color: darkFontGrey,
+                                      ),
+                                    ),
+                                    10.heightBox,
+                                    Text(
+                                      allproductdata[index]['p_price'],
+                                      style: const TextStyle(
+                                          color: redColor,
+                                          fontFamily: bold,
+                                          fontSize: 16),
+                                    )
+                                  ],
+                                )
+                                    .box
+                                    .white
+                                    .roundedSM
+                                    .padding(const EdgeInsets.all(8))
+                                    .margin(const EdgeInsets.symmetric(
+                                        horizontal: 4))
+                                    .make()
+                                    .onTap(() {
+                                  Get.to(() => ItemDetails(
+                                      title: "${allproductdata[index]['p_name']}",
+                                      data: allproductdata[index]));
+                                });
+                              },
+                            );
+                          }
+                        }),
                   ],
                 ),
               ),
