@@ -90,4 +90,22 @@ class FirestoreServices {
   static allProducts() {
     return firestore.collection(productsCollection).snapshots();
   }
+
+  //all product whoose feature  == true
+
+  static getFeatureProducts() {
+    return firestore
+        .collection(productsCollection)
+        .where('is_featured', isEqualTo: true)
+        .get();
+
+    //when you used it on future builder then you have to used .get() / not snapshot()
+  }
+
+  static searchProducts(title) {
+    return firestore
+        .collection(productsCollection)
+        .where('p_name', isLessThanOrEqualTo: title)
+        .get();
+  }
 }

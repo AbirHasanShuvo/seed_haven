@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:seed_haven/consts/consts.dart';
+import 'package:seed_haven/views/category_screen/category_details.dart';
 
 Widget featureButton({title, icon}) {
   return Row(
@@ -23,5 +25,8 @@ Widget featureButton({title, icon}) {
       .margin(const EdgeInsets.symmetric(horizontal: 4))
       .roundedSM
       .outerShadow
-      .make();
+      .make()
+      .onTap(() {
+    Get.to(() => Category_Details(title: title));
+  });
 }

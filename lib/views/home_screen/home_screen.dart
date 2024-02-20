@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:seed_haven/consts/consts.dart';
 import 'package:seed_haven/consts/list.dart';
+import 'package:seed_haven/controllers/home_controller.dart';
 import 'package:seed_haven/services/firestore_services.dart';
 import 'package:seed_haven/views/category_screen/item_details.dart';
 import 'package:seed_haven/views/home_screen/components/feature_button.dart';
+import 'package:seed_haven/views/home_screen/search_screen.dart';
 import 'package:seed_haven/widgets_common/home_button.dart';
 import 'package:seed_haven/widgets_common/loading_indicator.dart';
 
@@ -14,6 +16,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.find<HomeController>();
     return Container(
       color: lightGrey,
       padding: const EdgeInsets.all(12),
@@ -27,12 +30,19 @@ class HomeScreen extends StatelessWidget {
               height: 60,
               color: lightGrey,
               child: TextFormField(
-                decoration: const InputDecoration(
-                    suffixIcon: Icon(Icons.search),
+                controller: controller.searchController,
+                decoration: InputDecoration(
+                    suffixIcon: const Icon(Icons.search).onTap(() {
+                      if (controller.searchController.text.isNotEmpty) {
+                        Get.to(() => SearchScreen(
+                              title: controller.searchController.text,
+                            ));
+                      }
+                    }),
                     filled: true,
                     fillColor: whiteColor,
                     hintText: searchAnything,
-                    hintStyle: TextStyle(color: textfieldGrey)),
+                    hintStyle: const TextStyle(color: textfieldGrey)),
               ),
             ),
             10.heightBox,
@@ -166,43 +176,71 @@ class HomeScreen extends StatelessWidget {
                           SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             physics: const BouncingScrollPhysics(),
-                            child: Row(
-                              children: List.generate(
-                                  6,
-                                  (index) => Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Image.asset(
-                                            imgP1,
-                                            width: 150,
-                                            fit: BoxFit.cover,
-                                          ),
-                                          10.heightBox,
-                                          const Text(
-                                            "Laptop 4gb/64gb",
-                                            style: TextStyle(
-                                              fontFamily: semibold,
-                                              color: darkFontGrey,
-                                            ),
-                                          ),
-                                          10.heightBox,
-                                          const Text(
-                                            '\$600',
-                                            style: TextStyle(
-                                                color: redColor,
-                                                fontFamily: bold,
-                                                fontSize: 16),
-                                          )
-                                        ],
-                                      )
-                                          .box
-                                          .white
-                                          .roundedSM
-                                          .padding(const EdgeInsets.all(8))
-                                          .margin(const EdgeInsets.symmetric(
-                                              horizontal: 4))
-                                          .make()),
+                            child: FutureBuilder(
+                              future: FirestoreServices.getFeatureProducts(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot) {
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                    child: loadingIndicator(),
+                                  );
+                                } else if (snapshot.data!.docs.isEmpty) {
+                                  return Center(
+                                    child:
+                                        "No featured product found".text.make(),
+                                  );
+                                } else {
+                                  var featureData = snapshot.data!.docs;
+                                  return Row(
+                                    children: List.generate(
+                                        featureData.length,
+                                        (index) => Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Image.network(
+                                                  featureData[index]['p_imgs']
+                                                      [0],
+                                                  width: 150,
+                                                  height: 130,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                                10.heightBox,
+                                                Text(
+                                                  featureData[index]['p_name'],
+                                                  style: const TextStyle(
+                                                    fontFamily: semibold,
+                                                    color: darkFontGrey,
+                                                  ),
+                                                ),
+                                                10.heightBox,
+                                                Text(
+                                                  featureData[index]['p_price'],
+                                                  style: const TextStyle(
+                                                      color: redColor,
+                                                      fontFamily: bold,
+                                                      fontSize: 16),
+                                                )
+                                              ],
+                                            )
+                                                .box
+                                                .white
+                                                .roundedSM
+                                                .padding(
+                                                    const EdgeInsets.all(8))
+                                                .margin(
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 4))
+                                                .make()
+                                                .onTap(() {
+                                              Get.to(() => ItemDetails(
+                                                  title: featureData[index]
+                                                      ['p_name'],
+                                                  data: featureData[index]));
+                                            })),
+                                  );
+                                }
+                              },
                             ),
                           )
                         ],
@@ -299,7 +337,8 @@ class HomeScreen extends StatelessWidget {
                                     .make()
                                     .onTap(() {
                                   Get.to(() => ItemDetails(
-                                      title: "${allproductdata[index]['p_name']}",
+                                      title:
+                                          "${allproductdata[index]['p_name']}",
                                       data: allproductdata[index]));
                                 });
                               },
